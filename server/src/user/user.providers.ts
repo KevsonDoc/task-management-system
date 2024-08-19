@@ -3,7 +3,7 @@ import { PasswordEncryptorAdapter } from './adapters/encryptor/password-encrypto
 import { UserRepository } from './adapters/repositories/user.repository';
 import { CreateUserUseCase } from './use-case/create-user.use-case';
 
-export const providers: Provider[] = [
+export const userProviders: Provider[] = [
   {
     provide: 'UserRepository',
     useClass: UserRepository,

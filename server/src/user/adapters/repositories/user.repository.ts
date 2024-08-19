@@ -18,8 +18,19 @@ export class UserRepository implements IUserRepositoryContract {
     });
   }
 
-  public async findOne(user: Partial<UserEntity>): Promise<UserEntity | null> {
-    return this.prismaService.user.findFirst({ where: user });
+  public async findOne(
+    user: Partial<UserEntity>,
+    option?: { selectPassword?: boolean },
+  ): Promise<UserEntity | Partial<UserEntity> | null> {
+    return this.prismaService.user.findFirst({
+      where: user,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        password: option?.selectPassword ?? false,
+      },
+    });
   }
 
   public async findOneOrFail(user: Partial<UserEntity>): Promise<UserEntity> {
