@@ -4,7 +4,7 @@ import { IPasswordEncryptorAdapterContract } from '../contracts/password-encrypt
 import { ICreateUserUseCaseContract } from '../contracts/use-case.contract';
 import { IUserRepositoryContract } from '../contracts/user-repository.contract';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { UserEntity } from '../entity/user.entity';
+import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class CreateUserUseCase implements ICreateUserUseCaseContract {

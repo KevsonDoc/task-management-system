@@ -2,7 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IPasswordEncryptorAdapterContract } from 'src/user/contracts/password-encryptor.contract';
 import { IUserRepositoryContract } from 'src/user/contracts/user-repository.contract';
-import { UserEntity } from 'src/user/entity/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import { ILoginUseCaseContract } from '../constracts/use-case.contract';
 import { LoginDto } from '../dto/login.dto';
 

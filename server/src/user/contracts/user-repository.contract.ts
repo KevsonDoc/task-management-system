@@ -1,4 +1,4 @@
-import { UserEntity } from '../entity/user.entity';
+import { UserEntity } from '../entities/user.entity';
 
 export interface IUserRepositoryContract {
   find(limit: number, page: number): Promise<UserEntity[]>;
