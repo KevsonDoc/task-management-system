@@ -19,12 +19,18 @@ import { UpdateTaskDto } from '../dto/update-task.dto';
 import { IUpdateTaskUseCaseContract } from '../contracts/update-task-use-case.contract';
 import { IFindTaskByIdUseCase } from '../contracts/find-task-by-id-use-case.contract';
 import { AuthenticationGuard } from 'src/_share/guards/authentication-guard.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ShareTaskDto } from '../dto/share-task.dto';
 import { IShareTaskUseCase } from '../contracts/share-task.use-case';
 
 @ApiTags('Task')
 @ApiBearerAuth()
+@ApiParam({
+  name: 'projectId',
+  required: true,
+  description: 'The ID of the project',
+  schema: { type: 'string' },
+})
 @Controller('project/:projectId/task')
 @UseGuards(AuthenticationGuard)
 export class TaskController {
@@ -48,9 +54,14 @@ export class TaskController {
   @Post()
   public async create(
     @Req() request: Request,
+    @Param('projectId') projectId: string,
     @Body() createTaskDto: CreateTaskDto,
   ) {
-    await this.createTaskUseCase.execute(request.user.id, createTaskDto);
+    await this.createTaskUseCase.execute(
+      request.user.id,
+      projectId,
+      createTaskDto,
+    );
     return ['Tarefa criada'];
   }
 
@@ -75,6 +86,7 @@ export class TaskController {
     });
   }
 
+  @ApiBody({ type: UpdateTaskDto })
   @Put(':id')
   public async update(
     @Req() request: Request,
@@ -93,7 +105,7 @@ export class TaskController {
   public async share(
     @Req() request: Request,
     @Param('id') taskId: string,
-    shareTaskDto: ShareTaskDto,
+    @Body() shareTaskDto: ShareTaskDto,
   ) {
     await this.shareTaskUseCase.execute(request.user.id, taskId, shareTaskDto);
     return ['Tarefa compartilhada com sucesso'];

@@ -33,12 +33,12 @@ export class FindTaskUseCase implements IFindTaskUseCase {
     const user = project.users.find((userItem) => userItem.id === userId);
 
     const canReadAllTasks = user.permission
-      .map(({ name }) => name)
+      .map(({ id }) => id)
       .includes(Permissions.READ_ALL);
 
     return this.taskRepository.find({
-      limit,
-      page,
+      limit: +limit ?? undefined,
+      page: +page ?? undefined,
       projectId,
       priority,
       status,

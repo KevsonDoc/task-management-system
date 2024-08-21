@@ -23,11 +23,9 @@ export class ProjectRepository implements IProjectRepository {
     const projects = await this.prismaService.project.findMany({
       where: {
         ...where.project,
-        AND: {
-          userProject: {
-            every: {
-              userId: where.userId,
-            },
+        userProject: {
+          some: {
+            userId: where.userId,
           },
         },
       },
@@ -78,40 +76,42 @@ export class ProjectRepository implements IProjectRepository {
   public async findOne(
     where: WhereOption,
   ): Promise<ProjectResultFindOne | null> {
-    const { project, userId } = where;
-
-    const { userProject, ...rest } = await this.prismaService.project.findFirst(
-      {
-        where: {
-          ...project,
-          AND: {
-            userProject: {
-              every: {
-                userId,
-              },
+    const project = await this.prismaService.project.findFirst({
+      where: {
+        ...where.project,
+        AND: {
+          userProject: {
+            every: {
+              userId: where.userId,
             },
           },
         },
-        include: {
-          userProject: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+      },
+      include: {
+        userProject: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
               },
-              permission: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+            },
+            permission: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },
         },
       },
-    );
+    });
+
+    if (!project) {
+      return null;
+    }
+
+    const { userProject, ...rest } = project;
 
     return {
       ...rest,
