@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id          String        @id()
+  id          String        @id() @default(uuid())
   name        String
   email       String        @unique
   password    String
@@ -27,7 +27,7 @@ model UserProject {
   userId     String
   projectId  String
   createAt   DateTime      @default(now())
-  deletedAt  DateTime
+  deletedAt  DateTime?
   user       User          @relation(fields: [userId], references: [id])
   project    Project       @relation(fields: [projectId], references: [id])
   permission Permissions[]
@@ -38,7 +38,7 @@ model Project {
   title       String
   description String        @db.Text
   createdAt   DateTime
-  endDate     DateTime
+  endDate     DateTime?
   task        Task[]
   userProject UserProject[]
 }
@@ -49,9 +49,10 @@ model Task {
   description String     @db.Text
   projectId   String?
   createdAt   DateTime
-  endDate     DateTime
-  deletedAt   DateTime
-  priority    Priority   @default(BACKLOG)
+  endDate     DateTime?
+  deletedAt   DateTime?
+  priority    Priority   @default(LOW)
+  status      Status     @default(BACKLOG)
   userTask    UserTask[]
   project     Project?   @relation(fields: [projectId], references: [id])
 }
@@ -61,13 +62,21 @@ model UserTask {
   userId     String
   taskId     String
   createAt   DateTime      @default(now())
-  deletedAt  DateTime
+  deletedAt  DateTime?
   user       User          @relation(fields: [userId], references: [id])
   permission Permissions[]
   task       Task          @relation(fields: [taskId], references: [id])
 }
 
 enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  CRITICAL
+}
+
+enum Status {
   BACKLOG
   TODO
   IN_DEVELOPMENT

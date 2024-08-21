@@ -5,6 +5,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { ProjectModule } from './project/project.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ProjectModule } from './project/project.module';
     DatabaseModule,
     AuthenticationModule,
     ProjectModule,
+    TaskModule,
     ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],

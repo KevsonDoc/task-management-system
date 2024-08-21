@@ -1,5 +1,8 @@
 -- CreateEnum
-CREATE TYPE "Priority" AS ENUM ('BACKLOG', 'TODO', 'IN_DEVELOPMENT', 'IN_REVIEW', 'TESTING', 'DONE');
+CREATE TYPE "Priority" AS ENUM ('LOW', 'MEDIUM', 'HIGH', 'URGENT', 'CRITICAL');
+
+-- CreateEnum
+CREATE TYPE "Status" AS ENUM ('BACKLOG', 'TODO', 'IN_DEVELOPMENT', 'IN_REVIEW', 'TESTING', 'DONE');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -17,7 +20,7 @@ CREATE TABLE "UserProject" (
     "userId" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "deletedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserProject_pkey" PRIMARY KEY ("id")
 );
@@ -28,7 +31,7 @@ CREATE TABLE "Project" (
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3),
 
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
@@ -40,9 +43,10 @@ CREATE TABLE "Task" (
     "description" TEXT NOT NULL,
     "projectId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL,
-    "endDate" TIMESTAMP(3) NOT NULL,
-    "deletedAt" TIMESTAMP(3) NOT NULL,
-    "priority" "Priority" NOT NULL DEFAULT 'BACKLOG',
+    "endDate" TIMESTAMP(3),
+    "deletedAt" TIMESTAMP(3),
+    "priority" "Priority" NOT NULL DEFAULT 'LOW',
+    "status" "Status" NOT NULL DEFAULT 'BACKLOG',
 
     CONSTRAINT "Task_pkey" PRIMARY KEY ("id")
 );
@@ -53,7 +57,7 @@ CREATE TABLE "UserTask" (
     "userId" TEXT NOT NULL,
     "taskId" TEXT NOT NULL,
     "createAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "deletedAt" TIMESTAMP(3) NOT NULL,
+    "deletedAt" TIMESTAMP(3),
 
     CONSTRAINT "UserTask_pkey" PRIMARY KEY ("id")
 );
