@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
 import { IUserRepositoryContract } from 'src/user/contracts/user-repository.contract';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
@@ -7,6 +8,20 @@ import { UserEntity } from 'src/user/entities/user.entity';
 @Injectable()
 export class UserRepository implements IUserRepositoryContract {
   constructor(private readonly prismaService: PrismaService) {}
+
+  public async findOneByEmail(email: string): Promise<Omit<User, 'password'>> {
+    return this.prismaService.user.findFirst({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+        id: true,
+        name: true,
+        password: false,
+      },
+    });
+  }
 
   public async find(
     limit: number = 1,

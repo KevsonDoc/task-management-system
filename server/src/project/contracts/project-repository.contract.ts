@@ -1,4 +1,4 @@
-import { RequirePermissions } from 'src/_share/enum/require-permissions.enum';
+import { Permissions } from 'src/_share/enum/permissions.enum';
 import { ProjectEntity } from '../entities/project.entity';
 
 export type PaginationOption = {
@@ -8,7 +8,7 @@ export type PaginationOption = {
 
 export type WhereOption = {
   project?: Partial<ProjectEntity>;
-  userId: string;
+  userId?: string;
 };
 
 export type ProjectResultFind = {
@@ -57,7 +57,7 @@ export interface IProjectRepository {
   findOneOrFail(where: WhereOption): Promise<ProjectResultFindOne>;
   save(data: {
     project: Partial<ProjectEntity>;
-    permission: RequirePermissions[];
+    permission: Permissions[];
     relation: { userId: string };
   }): Promise<ProjectEntity>;
   update(id: string, project: Partial<ProjectEntity>): Promise<ProjectEntity>;

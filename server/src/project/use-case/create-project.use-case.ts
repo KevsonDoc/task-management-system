@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RequirePermissions } from 'src/_share/enum/require-permissions.enum';
+import { Permissions } from 'src/_share/enum/permissions.enum';
 import * as uuid from 'uuid';
 import { ICreateProjectUseCaseContract } from '../contracts/create-project.use-case.contract';
 import { IProjectRepository } from '../contracts/project-repository.contract';
@@ -25,11 +25,11 @@ export class CreateProjectUseCase implements ICreateProjectUseCaseContract {
     const { id } = await this.projectRepository.save({
       project: project,
       permission: [
-        RequirePermissions.READ,
-        RequirePermissions.READ_ALL,
-        RequirePermissions.CREATE,
-        RequirePermissions.UPDATE,
-        RequirePermissions.DELETE,
+        Permissions.READ,
+        Permissions.READ_ALL,
+        Permissions.CREATE,
+        Permissions.UPDATE,
+        Permissions.DELETE,
       ],
       relation: { userId },
     });

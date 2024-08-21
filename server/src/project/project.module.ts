@@ -6,6 +6,7 @@ import { AuthenticationModule } from 'src/authentication/authentication.module';
 
 @Module({
   imports: [DatabaseModule, AuthenticationModule],
+  exports: ['ProjectRepository'],
   controllers: [ProjectController],
   providers: [...projectProvider],
 })

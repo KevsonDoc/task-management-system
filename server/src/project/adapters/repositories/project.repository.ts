@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { RequirePermissions } from 'src/_share/enum/require-permissions.enum';
+import { Permissions } from 'src/_share/enum/permissions.enum';
 import { PrismaService } from 'src/database/prisma.service';
 import {
   IProjectRepository,
@@ -170,11 +170,11 @@ export class ProjectRepository implements IProjectRepository {
 
   public async save(option: {
     project: ProjectEntity;
-    permission: RequirePermissions[];
+    permission: Permissions[];
     relation: { userId: string };
   }): Promise<ProjectEntity> {
     const { project, relation, permission } = option;
-    return await this.prismaService.project.create({
+    return this.prismaService.project.create({
       data: {
         ...project,
         userProject: {
