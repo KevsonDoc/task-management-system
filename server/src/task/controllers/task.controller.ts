@@ -89,7 +89,7 @@ export class TaskController {
     return ['Tarefa foi atualizada.'];
   }
 
-  @Post(':id')
+  @Post(':id/share')
   public async share(
     @Req() request: Request,
     @Param('id') taskId: string,
