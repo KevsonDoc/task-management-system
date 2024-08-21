@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { IUserRepositoryContract } from 'src/user/contracts/user-repository.contract';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
-import { UserEntity } from 'src/user/entity/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class UserRepository implements IUserRepositoryContract {
@@ -18,8 +18,19 @@ export class UserRepository implements IUserRepositoryContract {
     });
   }
 
-  public async findOne(user: Partial<UserEntity>): Promise<UserEntity | null> {
-    return this.prismaService.user.findFirst({ where: user });
+  public async findOne(
+    user: Partial<UserEntity>,
+    option?: { selectPassword?: boolean },
+  ): Promise<UserEntity | Partial<UserEntity> | null> {
+    return this.prismaService.user.findFirst({
+      where: user,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        password: option?.selectPassword ?? false,
+      },
+    });
   }
 
   public async findOneOrFail(user: Partial<UserEntity>): Promise<UserEntity> {
