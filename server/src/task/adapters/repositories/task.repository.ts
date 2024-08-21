@@ -182,9 +182,16 @@ export class TaskRepository implements ITaskRepositoryContract {
     projectId,
   }: SaveTaskOption): Promise<TaskEntity> {
     return this.prismaService.task.create({
+      include: {
+        project: true,
+      },
       data: {
         ...task,
-        projectId,
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
         userTask: {
           create: {
             id: uuid.v4(),

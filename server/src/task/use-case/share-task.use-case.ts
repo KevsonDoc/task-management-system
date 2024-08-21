@@ -4,13 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ITaskRepositoryContract } from '../contracts/task-repository.contract';
+import { Permissions } from 'src/_share/enum/permissions.enum';
 import { IUserRepositoryContract } from 'src/user/contracts/user-repository.contract';
-import { IShareTaskUseCase } from '../contracts/share-task.use-case';
-import { ShareTaskDto } from '../dto/share-task.dto';
-import { IUserTaskRepository } from '../contracts/user-task-repository.contract';
-import { UserTaskEntity } from '../entities/user-task.entity';
 import * as uuid from 'uuid';
+import { IShareTaskUseCase } from '../contracts/share-task.use-case';
+import { ITaskRepositoryContract } from '../contracts/task-repository.contract';
+import { IUserTaskRepository } from '../contracts/user-task-repository.contract';
+import { ShareTaskDto } from '../dto/share-task.dto';
+import { UserTaskEntity } from '../entities/user-task.entity';
 
 @Injectable()
 export class ShareTaskUseCase implements IShareTaskUseCase {
@@ -36,19 +37,36 @@ export class ShareTaskUseCase implements IShareTaskUseCase {
       throw new ForbiddenException(['E-mail não encontrado']);
     }
 
+    const userTask = await this.userTaskRepository.findByUserId(
+      taskId,
+      user.id,
+    );
+
+    if (userTask) {
+      throw new ForbiddenException([
+        'Tarefa já está compartilhada com esse e-mail',
+      ]);
+    }
+
     const task = await this.taskRepository.findOne({ taskId, userId });
 
     if (!task) {
       throw new NotFoundException(['Tarefa não encontrada.']);
     }
 
-    const userTask = new UserTaskEntity({
+    const userTaskEntity = new UserTaskEntity({
       id: uuid.v4(),
       createAt: new Date(),
       taskId,
       userId: user.id,
     });
 
-    await this.userTaskRepository.save(userTask);
+    await this.userTaskRepository.save(
+      task.projectId,
+      userTaskEntity,
+      shareTaskDto.permission.map(
+        (permissionItem) => Permissions[permissionItem],
+      ),
+    );
   }
 }
