@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateUserUserCase } from './create-user.use-case';
 import { ForbiddenException } from '@nestjs/common';
-import { UserEntity } from '../entity/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { faker } from '@faker-js/faker';
 import { CreateUserDto } from '../dto/create-user.dto';
 import * as uuid from 'uuid';
