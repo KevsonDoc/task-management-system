@@ -11,18 +11,15 @@ export class CreateTaskDto {
   public description: string;
 
   @ApiProperty()
-  @IsNotEmpty()
-  public projectId: string;
+  public endDate?: Date | null;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  public endDate: Date;
-
-  @ApiProperty()
+  @ApiProperty({ enum: ['LOW', 'MEDIUM', 'HIGH', 'URGENT', 'CRITICAL'] })
   @IsNotEmpty()
   public priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT' | 'CRITICAL';
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: ['BACKLOG', 'TODO', 'IN_DEVELOPMENT', 'IN_REVIEW', 'TESTING', 'DONE'],
+  })
   @IsNotEmpty()
   public status:
     | 'BACKLOG'

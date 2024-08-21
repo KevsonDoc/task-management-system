@@ -11,9 +11,6 @@ export class TaskEntity {
   public description: string;
 
   @ApiProperty()
-  public projectId: string;
-
-  @ApiProperty()
   public createdAt: Date;
 
   @ApiProperty()
