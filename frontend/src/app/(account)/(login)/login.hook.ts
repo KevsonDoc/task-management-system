@@ -40,8 +40,13 @@ export default function useLoginHook(): ILoginContainerDI {
         };
       }>,
     ) => {
-      Api.defaults.headers.common.Authorization = response.data.token;
-      localStorage.setItem('app', JSON.stringify(response.data));
+      Api.defaults.headers.common.Authorization = `Bearer + 1 ${response.data.token}`;
+      Api.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ${response.data.token}`;
+        return config;
+      });
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       toast(response.status, ['Bem vindo']);
       route.push('/dashboard/project');
     },
