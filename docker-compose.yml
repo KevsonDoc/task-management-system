@@ -1,24 +1,4 @@
 services:
-  api:
-    build:
-      context: ./server
-      target: ${NODE_ENV}
-    ports:
-      - ${API_PORT}:3000
-    volumes:
-      - ./server:/usr/task-management-system-server
-      - ./server/node_modules:/usr/task-management-system-server/node_modules
-    env_file:
-      - .env
-
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - ${FRONTEND_PORT}:3000
-    env_file:
-      - .env
-
   database:
     image: postgres
     restart: always
@@ -31,3 +11,22 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME_DOCKER}
     ports:
       - 5432:5432
+
+  api:
+    build:
+      context: ./server
+      target: ${NODE_ENV}
+    depends_on:
+      - database
+    ports:
+      - ${API_PORT}:3000
+    env_file:
+      - .env
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - ${FRONTEND_PORT}:3000
+    env_file:
+      - .env

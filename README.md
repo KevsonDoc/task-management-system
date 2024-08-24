@@ -46,6 +46,12 @@ APP_EXPIRES_TIME="24h" # tempo de expiração no token
 FRONTEND_PORT="80" # porta do frontend exposta pelo docker
 ```
 
+Crie um .env na raiz do repositório server
+
+```env
+DATABASE_URL="postgresql://root:root@database:5432/TASK_MANAGEMENT_SYSTEM?schema=public"
+```
+
 Crie um .env na raiz do repositório frontend
 
 ```env

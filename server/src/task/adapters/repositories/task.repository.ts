@@ -24,8 +24,6 @@ export class TaskRepository implements ITaskRepositoryContract {
     priority,
     status,
   }: FindTaskOption): Promise<FindTaskResultUseCase> {
-    console.log(userId);
-
     const task = await this.prismaService.task.findMany({
       where: {
         projectId,
