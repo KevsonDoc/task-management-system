@@ -13,7 +13,7 @@ export default function ProjectView(props: IProjectContainerDI) {
   return (
     <main className="flex flex-1 flex-col px-4 py-4 gap-y-4 max-h-lvh">
       <Modal isOpen={props.modal.isOpen} onClose={props.modal.onClose}>
-        <h1>Criar modal</h1>
+        <h1>Create project</h1>
         <form
           onSubmit={props.createProject.handleSubmit(
             props.createProject.onSubmit,
@@ -116,9 +116,19 @@ export default function ProjectView(props: IProjectContainerDI) {
             handleSetPage={props.project.handleSetPage}
             nextPage={props.project.data.page + 1}
             previousPage={props.project.data.page - 1}
-            lastPage={Math.ceil(
-              props.project.data.total / props.project.data.totalPerPage,
-            )}
+            lastPage={
+              Number.isNaN(
+                Math.ceil(
+                  props.project.data.total / props.project.data.totalPerPage,
+                ),
+              )
+                ? 1
+                : props.project.data.page * 20 <= props.project.data.total
+                ? Math.ceil(
+                    props.project.data.total / props.project.data.totalPerPage,
+                  )
+                : props.project.data.page
+            }
             page={props.project.data.page}
             toalPerPage={props.project.data.data.length}
             total={props.project.data.total}
