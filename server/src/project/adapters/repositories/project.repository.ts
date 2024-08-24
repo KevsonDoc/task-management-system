@@ -50,7 +50,7 @@ export class ProjectRepository implements IProjectRepository {
         ...where.project,
         AND: {
           userProject: {
-            every: {
+            some: {
               userId: where.userId,
             },
           },
@@ -81,7 +81,7 @@ export class ProjectRepository implements IProjectRepository {
         ...where.project,
         AND: {
           userProject: {
-            every: {
+            some: {
               userId: where.userId,
             },
           },
@@ -125,40 +125,42 @@ export class ProjectRepository implements IProjectRepository {
   public async findOneOrFail(
     where: WhereOption,
   ): Promise<ProjectResultFindOne> {
-    const { project, userId } = where;
-
-    const { userProject, ...rest } =
-      await this.prismaService.project.findFirstOrThrow({
-        where: {
-          ...project,
-          AND: {
-            userProject: {
-              every: {
-                userId,
-              },
-            },
-          },
-        },
-        include: {
+    const project = await this.prismaService.project.findFirstOrThrow({
+      where: {
+        ...where.project,
+        AND: {
           userProject: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+            some: {
+              userId: where.userId,
+            },
+          },
+        },
+      },
+      include: {
+        userProject: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
               },
-              permission: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+            },
+            permission: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },
         },
-      });
+      },
+    });
 
+    if (!project) {
+      return null;
+    }
+
+    const { userProject, ...rest } = project;
     return {
       ...rest,
       users: userProject.map(({ user, permission }) => ({

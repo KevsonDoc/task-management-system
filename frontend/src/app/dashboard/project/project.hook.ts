@@ -79,10 +79,21 @@ export default function useProjectHook(): IProjectContainerDI {
     await mutateAsync(form);
   };
 
-  const handleNextPage = (): void => setPage((oldPage) => oldPage++);
-  const handlePreviousPage = (): void => setPage((oldPage) => oldPage--);
+  const handleNextPage = (): void => {
+    if (
+      data &&
+      data.page <= Math.ceil(data.total / data.totalPerPage) &&
+      data.page * 20 <= data.total
+    ) {
+      setPage((oldPage) => oldPage + 1);
+    }
+  };
+  const handlePreviousPage = (): void => {
+    if (data && data.page > 1) {
+      setPage((oldPage) => oldPage - 1);
+    }
+  };
   const handleSetPage = (page: number): void => setPage(() => page);
-
   const onClose = (): void => setOpen(() => false);
   const onOpenModal = (): void => setOpen(() => true);
 

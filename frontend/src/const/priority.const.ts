@@ -1,7 +1,7 @@
 export const PRIORITY = {
   ALL: {
-    value: 'LOW',
-    label: 'low',
+    value: 'ALL',
+    label: 'all',
     color: '#7d7d7d',
   },
   LOW: {
@@ -30,20 +30,3 @@ export const PRIORITY = {
     color: '#FF0000',
   },
 };
-
-// const StatusOption = [
-//   STATUS.BACKLOG,
-//   STATUS.TODO,
-//   STATUS.IN_DEVELOPMENT,
-//   STATUS.IN_REVIEW,
-//   STATUS.TESTING,
-//   STATUS.DONE,
-// ];
-
-// const PriorityOption = [
-//   PRIORITY.LOW,
-//   PRIORITY.MEDIUM,
-//   PRIORITY.HIGH,
-//   PRIORITY.URGENT,
-//   PRIORITY.CRITICAL,
-// ];

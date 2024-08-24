@@ -1,7 +1,7 @@
 export const STATUS = {
   ALL: {
-    value: 'LOW',
-    label: 'low',
+    value: 'ALL',
+    label: 'all',
     color: '#7d7d7d',
   },
   BACKLOG: {

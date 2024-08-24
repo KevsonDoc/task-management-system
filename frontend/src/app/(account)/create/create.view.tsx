@@ -2,8 +2,9 @@ import { Button } from '@/components/Button';
 import Input from '@/components/Input';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ICreateUserContainerDI } from './create.contract';
 
-export function CreateView() {
+export function CreateView(props: ICreateUserContainerDI) {
   return (
     <main className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm rounded-xl bg-white px-5 py-5 text-gray-900 shadow-sm ring-inset">
@@ -21,30 +22,32 @@ export function CreateView() {
           </h2>
         </div>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form
+            onSubmit={props.form.handleSubmit(props.form.onSubmit)}
+            className="space-y-6"
+          >
             <Input
               label="Name"
               id="name"
-              name="name"
-              type="text"
-              required
-              autoComplete="email"
+              {...props.form.register('name', {
+                setValueAs: (value) => value || undefined,
+              })}
             />
             <Input
               label="E-mail"
               id="email"
-              name="email"
               type="email"
-              required
-              autoComplete="email"
+              {...props.form.register('email', {
+                setValueAs: (value) => value || undefined,
+              })}
             />
             <Input
               label="Password"
               id="password"
-              name="password"
               type="password"
-              required
-              autoComplete="current-password"
+              {...props.form.register('password', {
+                setValueAs: (value) => value || undefined,
+              })}
             />
             <div>
               <Button title="Submit" />

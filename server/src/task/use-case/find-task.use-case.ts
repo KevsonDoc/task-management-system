@@ -42,7 +42,7 @@ export class FindTaskUseCase implements IFindTaskUseCase {
       projectId,
       priority,
       status,
-      userId: canReadAllTasks ? userId : undefined,
+      userId: canReadAllTasks ? undefined : userId,
     });
   }
 }
