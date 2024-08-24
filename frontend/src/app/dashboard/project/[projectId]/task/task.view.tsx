@@ -194,6 +194,7 @@ export function TaskView(props: ITaskContainerDI) {
           <div className="mt-4">
             <Button
               title="Submit"
+              type="submit"
               isLoading={props.task.share.mutation.isPending}
             />
           </div>

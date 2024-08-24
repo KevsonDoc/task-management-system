@@ -62,7 +62,7 @@ const PriorityOption = [
 const shareTaskSchema = z.object({
   email: z.string({ required_error: 'E-mail is required' }),
   permission: z.object({
-    value: z.string(),
+    value: z.string().array(),
     label: z.string(),
     color: z.string(),
   }),
@@ -173,11 +173,12 @@ export default function useTaskHook(): ITaskContainerDI {
     mutationFn: (form: ShareTaskFormField) =>
       Api.post(`project/${params.projectId}/task/${shareModalTask.id}/share`, {
         email: form.email,
-        permission: [form.permission.value],
+        permission: form.permission.value,
       }),
     onSuccess: (response: AxiosResponse) => {
       toast(response.status, ['Done']);
       queryClient.invalidateQueries({ queryKey: ['task'] });
+      shareTaskForm.reset();
       setShareModalTask({ isOpen: false, id: undefined, title: undefined });
     },
     onError: (
@@ -254,7 +255,6 @@ export default function useTaskHook(): ITaskContainerDI {
   const onCloseModal = (): void => setModalCreateTask(false);
   const onOpenModal = (): void => setModalCreateTask(true);
   const back = (): void => route.back();
-
   const handleNextPage = (): void => {
     if (
       data &&
@@ -270,6 +270,7 @@ export default function useTaskHook(): ITaskContainerDI {
     }
   };
   const handleSetPage = (page: number): void => setPage(() => page);
+
   const onSubmitShare = async (form: ShareTaskFormField): Promise<void> => {
     await mutationShareTask.mutateAsync(form);
   };

@@ -24,6 +24,8 @@ export class TaskRepository implements ITaskRepositoryContract {
     priority,
     status,
   }: FindTaskOption): Promise<FindTaskResultUseCase> {
+    console.log(userId);
+
     const task = await this.prismaService.task.findMany({
       where: {
         projectId,
@@ -33,7 +35,7 @@ export class TaskRepository implements ITaskRepositoryContract {
         AND: userId
           ? {
               userTask: {
-                every: {
+                some: {
                   userId,
                 },
               },
@@ -70,7 +72,7 @@ export class TaskRepository implements ITaskRepositoryContract {
         deletedAt: null,
         AND: {
           userTask: {
-            every: {
+            some: {
               userId,
             },
           },
@@ -98,12 +100,12 @@ export class TaskRepository implements ITaskRepositoryContract {
     taskId,
     userId,
   }: FindOneTaskOption): Promise<FindOneTaskdeResult> {
-    const { userTask, ...task } = await this.prismaService.task.findFirst({
+    const task = await this.prismaService.task.findFirst({
       where: {
         id: taskId,
         deletedAt: null,
         userTask: {
-          every: {
+          some: {
             userId: userId,
           },
         },
@@ -128,8 +130,10 @@ export class TaskRepository implements ITaskRepositoryContract {
       },
     });
 
+    if (!task) return null;
+    const { userTask, ...rest } = task;
     return {
-      ...task,
+      ...rest,
       users: userTask.map(({ user, permission }) => ({ ...user, permission })),
     };
   }
@@ -138,39 +142,41 @@ export class TaskRepository implements ITaskRepositoryContract {
     taskId,
     userId,
   }: FindOneTaskOption): Promise<FindOneTaskdeResult> {
-    const { userTask, ...task } =
-      await this.prismaService.task.findFirstOrThrow({
-        where: {
-          id: taskId,
-          deletedAt: null,
-          userTask: {
-            every: {
-              userId: userId,
-            },
+    const task = await this.prismaService.task.findFirstOrThrow({
+      where: {
+        id: taskId,
+        deletedAt: null,
+        userTask: {
+          some: {
+            userId: userId,
           },
         },
-        include: {
-          userTask: {
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+      },
+      include: {
+        userTask: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
               },
-              permission: {
-                select: {
-                  id: true,
-                  name: true,
-                },
+            },
+            permission: {
+              select: {
+                id: true,
+                name: true,
               },
             },
           },
         },
-      });
+      },
+    });
+
+    if (!task) return null;
+    const { userTask, ...rest } = task;
 
     return {
-      ...task,
+      ...rest,
       users: userTask.map(({ user, permission }) => ({ ...user, permission })),
     };
   }
