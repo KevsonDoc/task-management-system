@@ -29,6 +29,7 @@ export function CreateView(props: ICreateUserContainerDI) {
             <Input
               label="Name"
               id="name"
+              error={props.form.errors.name?.message}
               {...props.form.register('name', {
                 setValueAs: (value) => value || undefined,
               })}
@@ -37,6 +38,7 @@ export function CreateView(props: ICreateUserContainerDI) {
               label="E-mail"
               id="email"
               type="email"
+              error={props.form.errors.email?.message}
               {...props.form.register('email', {
                 setValueAs: (value) => value || undefined,
               })}
@@ -45,6 +47,7 @@ export function CreateView(props: ICreateUserContainerDI) {
               label="Password"
               id="password"
               type="password"
+              error={props.form.errors.password?.message}
               {...props.form.register('password', {
                 setValueAs: (value) => value || undefined,
               })}
