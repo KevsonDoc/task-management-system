@@ -25,6 +25,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/doc', app, document);
 
-  await app.listen(3000);
+  await app.listen(Number.isNaN(+process.env.API_PORT) ? 3333 : +process.env.API_PORT);
 }
 bootstrap();

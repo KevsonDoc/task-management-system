@@ -1,12 +1,12 @@
-# task-management-system
+# Task Management System
 
-# Nome do Projeto
+## Visão Geral
 
-sistema de gerenciamento de tarefas para a empresa SILVER
+Este é um sistema de gerenciamento de tarefas desenvolvido para a empresa SILVER, com o objetivo de otimizar e organizar as tarefas internas.
 
 ## Pré-requisitos
 
-Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
+Antes de iniciar, certifique-se de que as seguintes ferramentas estejam instaladas em sua máquina:
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/)
@@ -15,52 +15,42 @@ Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em s
 
 ## Configuração do Repositório
 
-### 1. Clone o repositório
+### 1. Clonando o Repositório
 
-Primeiro, clone o repositório para a sua máquina local:
+Para começar, clone o repositório para sua máquina local usando o comando abaixo:
 
 ```bash
 git clone https://github.com/usuario/nome-do-repositorio.git
 ```
 
-### Configuranto ENVs
+### 2. Configurando ENVs
 
-Crie um arquivo .env na raíz do projeto
+Na raiz do repositório, crie um arquivo .env com as seguintes configurações:
 
-```env
-# SYSTEM ENVIRIOMENT
-NODE_ENV="development" # development | test | production
-
-# DATABASE
-DATABASE_USERNAME_DOCKER="root" # username do banco postgresql no docker
-DATABASE_PASSWORD_DOCKER="root" # senha do banco postgresql no docker
-DATABASE_NAME_DOCKER="TASK_MANAGEMENT_SYSTEM" # nome do banco de dados
-
-# API
-API_PORT="3333" ### pora a ser exposta pelo docker
-DATABASE_URL="postgresql://root:root@database:5432/TASK_MANAGEMENT_SYSTEM?schema=public"
-APP_SECRET="gere sua chave" # usado como secret no JWT
-APP_EXPIRES_TIME="24h" # tempo de expiração no token
-
-# FRONTEND ENVIRIOMENT
-FRONTEND_PORT="80" # porta do frontend exposta pelo docker
+```.env
+NODE_ENV=production # development | test | production
+API_PORT=3333 # Porta onde a API será executada
+APP_SECRET=sua_chave # Chave para assinatura dos tokens de autenticação
+APP_EXPIRES_TIME=24h # Tempo de expiração do token JWT
+DATABASE_URL=postgresql://root:root@database:5432/tms?schema=public # URL de conexão com o banco de dados, apontando para o container PostgreSQL no Docker
 ```
 
-Crie um .env na raiz do repositório server
+Dentro da pasta frontend, crie um arquivo .env e adicione a variável `NEXT_PUBLIC_API_URL` apontando para o servidor Docker:
 
-```env
-DATABASE_URL="postgresql://root:root@database:5432/TASK_MANAGEMENT_SYSTEM?schema=public"
+```.env
+NEXT_PUBLIC_API_URL="http://localhost:3333" # URL da API + Porta
 ```
 
-Crie um .env na raiz do repositório frontend
+### 3. Executando o Container
 
-```env
-NEXT_PUBLIC_API_URL="http://localhost:3333" # URL da api + porta
+Para iniciar o sistema, execute o comando abaixo:
+
+```bash
+docker compose up --build
 ```
 
-### Execultando container
+Se preferir liberar o terminal após iniciar o container, execute:
 
-Agora basta rodar o comando
-`bash docker compose up --build`
-ou para liberar o terminal
-`bash docker compose up --build -d`
+```bash
+docker compose up --build -d
+```
