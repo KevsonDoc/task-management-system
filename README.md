@@ -25,7 +25,7 @@ git clone https://github.com/usuario/nome-do-repositorio.git
 
 ### 2. Configurando ENVs
 
-Na raiz do repositório, crie um arquivo .env com as seguintes configurações:
+Na raiz do repositório, crie um arquivo `.env` com as seguintes configurações:
 
 ```.env
 NODE_ENV=production # development | test | production
@@ -35,7 +35,7 @@ APP_EXPIRES_TIME=24h # Tempo de expiração do token JWT
 DATABASE_URL=postgresql://root:root@database:5432/tms?schema=public # URL de conexão com o banco de dados, apontando para o container PostgreSQL no Docker
 ```
 
-Dentro da pasta frontend, crie um arquivo .env e adicione a variável `NEXT_PUBLIC_API_URL` apontando para o servidor Docker:
+Dentro da pasta `frontend`, crie um arquivo `.env` e adicione a variável `NEXT_PUBLIC_API_URL` apontando para o servidor Docker:
 
 ```.env
 NEXT_PUBLIC_API_URL="http://localhost:3333" # URL da API + Porta
