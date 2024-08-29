@@ -54,3 +54,9 @@ Se preferir liberar o terminal após iniciar o container, execute:
 ```bash
 docker compose up --build -d
 ```
+
+links para teste
+- [Web](https://git-scm.com/](https://web-tms.onrender.com/)
+- [Swagger API](https://nodejs.org/](https://task-management-system-dnor.onrender.com/api/doc)
+
+
