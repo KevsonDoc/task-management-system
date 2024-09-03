@@ -210,6 +210,7 @@ export default function useTaskHook(): ITaskContainerDI {
       toast(response.status, ['Done']);
       queryClient.invalidateQueries({ queryKey: ['task'] });
       setModalUpdateTask({ isOpen: false, data: undefined });
+      updateTaskForm.reset();
     },
     onError: (
       error: AxiosError<{
@@ -237,6 +238,7 @@ export default function useTaskHook(): ITaskContainerDI {
       toast(response.status, ['Task created']);
       queryClient.invalidateQueries({ queryKey: ['task'] });
       onCloseModal();
+      createTaskForm.reset();
     },
     onError: (
       error: AxiosError<{
