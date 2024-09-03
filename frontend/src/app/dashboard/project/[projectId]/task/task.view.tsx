@@ -49,7 +49,7 @@ export function TaskView(props: ITaskContainerDI) {
             type="datetime-local"
             error={props.task.create.form.formState.errors.endDate?.message}
             {...props.task.create.form.register('endDate', {
-              setValueAs: (value) => value || undefined,
+              setValueAs: (value: string) => new Date(value) || undefined,
             })}
           />
           <InputSelect

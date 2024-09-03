@@ -1,6 +1,17 @@
 import Api from '@/api';
+import { PERMISSION_TASK } from '@/const/permission.const';
+import { PRIORITY } from '@/const/priority.const';
+import { STATUS } from '@/const/status.const';
+import useToast from '@/hooks/useToast.hook';
+import { queryClient } from '@/providers/QueryClientProvider';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { AxiosError, AxiosResponse } from 'axios';
+import { parseISO } from 'date-fns';
+import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import {
   CreateTaskFormField,
   FilterTaskField,
@@ -10,17 +21,6 @@ import {
   TaskModel,
   UpdateTaskFormField,
 } from './task.contract';
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { STATUS } from '@/const/status.const';
-import { PRIORITY } from '@/const/priority.const';
-import { PERMISSION_TASK } from '@/const/permission.const';
-import { AxiosError, AxiosResponse } from 'axios';
-import useToast from '@/hooks/useToast.hook';
-import { z } from 'zod';
-import { queryClient } from '@/providers/QueryClientProvider';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { parseISO } from 'date-fns';
 
 const fetchTask = async (
   projectId: string,
@@ -75,7 +75,7 @@ const updateTaskSchema = z.object({
   description: z
     .string({ required_error: 'Description is required' })
     .min(1, { message: 'Description is required' }),
-  endDate: z.string().optional(),
+  endDate: z.coerce.date().optional(),
   status: z.object({
     value: z.string(),
     label: z.string(),
